@@ -16,39 +16,49 @@ let%test _ = last_num_exn "treb7uchet" = 7
 
 (* PART 2 *)
 
+let number_map =
+  [
+    ("one", 1);
+    ("two", 2);
+    ("three", 3);
+    ("four", 4);
+    ("five", 5);
+    ("six", 6);
+    ("seven", 7);
+    ("eight", 8);
+    ("nine", 9);
+    ("1", 1);
+    ("2", 2);
+    ("3", 3);
+    ("4", 4);
+    ("5", 5);
+    ("6", 6);
+    ("7", 7);
+    ("8", 8);
+    ("9", 9);
+  ]
+
 let rec first_num_2_exn s =
-  match String.to_list s with
-  | [] -> failwith "No number found"
-  | 'o' :: 'n' :: 'e' :: _ -> 1
-  | 't' :: 'w' :: 'o' :: _ -> 2
-  | 't' :: 'h' :: 'r' :: 'e' :: 'e' :: _ -> 3
-  | 'f' :: 'o' :: 'u' :: 'r' :: _ -> 4
-  | 'f' :: 'i' :: 'v' :: 'e' :: _ -> 5
-  | 's' :: 'i' :: 'x' :: _ -> 6
-  | 's' :: 'e' :: 'v' :: 'e' :: 'n' :: _ -> 7
-  | 'e' :: 'i' :: 'g' :: 'h' :: 't' :: _ -> 8
-  | 'n' :: 'i' :: 'n' :: 'e' :: _ -> 9
-  | c :: _ when Char.is_digit c -> c |> Char.to_string |> Int.of_string
-  | _ :: t -> first_num_2_exn (String.of_char_list t)
+  let value =
+    List.find_map number_map ~f:(fun (num, value) ->
+        if String.is_prefix s ~prefix:num then Some value else None)
+  in
+  match value with
+  | Some v -> v
+  | None -> first_num_2_exn (String.drop_prefix s 1)
 
 let%test _ = first_num_2_exn "two1nine" = 2
 let%test _ = first_num_2_exn "abcone2threexyz" = 1
 let%test _ = first_num_2_exn "7pqrstsixteen" = 7
 
 let rec last_num_2_exn s =
-  match List.rev (String.to_list s) with
-  | [] -> failwith "No number found"
-  | 'e' :: 'n' :: 'o' :: _ -> 1
-  | 'o' :: 'w' :: 't' :: _ -> 2
-  | 'e' :: 'e' :: 'r' :: 'h' :: 't' :: _ -> 3
-  | 'r' :: 'u' :: 'o' :: 'f' :: _ -> 4
-  | 'e' :: 'v' :: 'i' :: 'f' :: _ -> 5
-  | 'x' :: 'i' :: 's' :: _ -> 6
-  | 'n' :: 'e' :: 'v' :: 'e' :: 's' :: _ -> 7
-  | 't' :: 'h' :: 'g' :: 'i' :: 'e' :: _ -> 8
-  | 'e' :: 'n' :: 'i' :: 'n' :: _ -> 9
-  | c :: _ when Char.is_digit c -> c |> Char.to_string |> Int.of_string
-  | _ :: t -> last_num_2_exn (String.of_char_list (List.rev t))
+  let value =
+    List.find_map number_map ~f:(fun (num, value) ->
+        if String.is_suffix s ~suffix:num then Some value else None)
+  in
+  match value with
+  | Some v -> v
+  | None -> last_num_2_exn (String.drop_suffix s 1)
 
 let%test _ = last_num_2_exn "two1nine" = 9
 let%test _ = last_num_2_exn "abcone2threexyz" = 3
