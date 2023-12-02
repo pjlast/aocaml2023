@@ -16,50 +16,38 @@ let%test _ = last_num_exn "treb7uchet" = 7
 
 (* PART 2 *)
 
-let number_map =
-  [
-    ("one", 1);
-    ("two", 2);
-    ("three", 3);
-    ("four", 4);
-    ("five", 5);
-    ("six", 6);
-    ("seven", 7);
-    ("eight", 8);
-    ("nine", 9);
-    ("1", 1);
-    ("2", 2);
-    ("3", 3);
-    ("4", 4);
-    ("5", 5);
-    ("6", 6);
-    ("7", 7);
-    ("8", 8);
-    ("9", 9);
-  ]
+let rec first_num_2_exn s acc =
+  match s with
+  | "" -> acc
+  | s when String.is_prefix s ~prefix:"one" || String.is_prefix s ~prefix:"1" ->
+      first_num_2_exn (String.drop_prefix s 1) (acc @ [ 1 ])
+  | s when String.is_prefix s ~prefix:"two" || String.is_prefix s ~prefix:"2" ->
+      first_num_2_exn (String.drop_prefix s 1) (acc @ [ 2 ])
+  | s when String.is_prefix s ~prefix:"three" || String.is_prefix s ~prefix:"3"
+    ->
+      first_num_2_exn (String.drop_prefix s 1) (acc @ [ 3 ])
+  | s when String.is_prefix s ~prefix:"four" || String.is_prefix s ~prefix:"4"
+    ->
+      first_num_2_exn (String.drop_prefix s 1) (acc @ [ 4 ])
+  | s when String.is_prefix s ~prefix:"five" || String.is_prefix s ~prefix:"5"
+    ->
+      first_num_2_exn (String.drop_prefix s 1) (acc @ [ 5 ])
+  | s when String.is_prefix s ~prefix:"six" || String.is_prefix s ~prefix:"6" ->
+      first_num_2_exn (String.drop_prefix s 1) (acc @ [ 6 ])
+  | s when String.is_prefix s ~prefix:"seven" || String.is_prefix s ~prefix:"7"
+    ->
+      first_num_2_exn (String.drop_prefix s 1) (acc @ [ 7 ])
+  | s when String.is_prefix s ~prefix:"eight" || String.is_prefix s ~prefix:"8"
+    ->
+      first_num_2_exn (String.drop_prefix s 1) (acc @ [ 8 ])
+  | s when String.is_prefix s ~prefix:"nine" || String.is_prefix s ~prefix:"9"
+    ->
+      first_num_2_exn (String.drop_prefix s 1) (acc @ [ 9 ])
+  | _ -> first_num_2_exn (String.drop_prefix s 1) acc
 
-let rec first_num_2_exn s =
-  let value =
-    List.find_map number_map ~f:(fun (num, value) ->
-        if String.is_prefix s ~prefix:num then Some value else None)
-  in
-  match value with
-  | Some v -> v
-  | None -> first_num_2_exn (String.drop_prefix s 1)
-
-let%test _ = first_num_2_exn "two1nine" = 2
-let%test _ = first_num_2_exn "abcone2threexyz" = 1
-let%test _ = first_num_2_exn "7pqrstsixteen" = 7
-
-let rec last_num_2_exn s =
-  let value =
-    List.find_map number_map ~f:(fun (num, value) ->
-        if String.is_suffix s ~suffix:num then Some value else None)
-  in
-  match value with
-  | Some v -> v
-  | None -> last_num_2_exn (String.drop_suffix s 1)
-
-let%test _ = last_num_2_exn "two1nine" = 9
-let%test _ = last_num_2_exn "abcone2threexyz" = 3
-let%test _ = last_num_2_exn "7pqrstsixteen" = 6
+let%test _ = List.hd_exn @@ first_num_2_exn "two1nine" [] = 2
+let%test _ = List.hd_exn @@ first_num_2_exn "abcone2threexyz" [] = 1
+let%test _ = List.hd_exn @@ first_num_2_exn "7pqrstsixteen" [] = 7
+let%test _ = List.last_exn @@ first_num_2_exn "two1nine" [] = 9
+let%test _ = List.last_exn @@ first_num_2_exn "abcone2threexyz" [] = 3
+let%test _ = List.last_exn @@ first_num_2_exn "7pqrstsixteen" [] = 6

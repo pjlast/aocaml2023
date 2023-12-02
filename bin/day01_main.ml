@@ -1,3 +1,4 @@
+open Base
 open Day01
 
 let rec solve_day_1_part_1 ic acc =
@@ -13,13 +14,15 @@ let rec solve_day_1_part_2 ic acc =
   | None -> acc
   | Some line ->
       solve_day_1_part_2 ic
-        (acc + (10 * first_num_2_exn line) + last_num_2_exn line)
+        (acc
+        + ((10 * (List.hd_exn @@ first_num_2_exn line []))
+          + (List.last_exn @@ first_num_2_exn line [])))
 
 let () =
   let ic = Stdio.In_channel.create "inputs/day01.txt" in
-  print_endline "day 1 part 1";
-  print_endline (Int.to_string (solve_day_1_part_1 ic 0));
+  Stdio.print_endline "day 1 part 1";
+  Stdio.print_endline (Int.to_string (solve_day_1_part_1 ic 0));
 
   let ic = Stdio.In_channel.create "inputs/day01.txt" in
-  print_endline "day 1 part 2";
-  print_endline (Int.to_string (solve_day_1_part_2 ic 0))
+  Stdio.print_endline "day 1 part 2";
+  Stdio.print_endline (Int.to_string (solve_day_1_part_2 ic 0))

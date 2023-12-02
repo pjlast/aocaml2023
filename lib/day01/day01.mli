@@ -4,8 +4,5 @@ val first_num_exn : string -> int
 val last_num_exn : string -> int
 (** [last_num_exn s] returns the last digit found in [s] *)
 
-val first_num_2_exn : string -> int
+val first_num_2_exn : string -> int list -> int list
 (** [first_num_2_exn s] returns the first number found in [s], which could be either a digit, or a word like "one" *)
-
-val last_num_2_exn : string -> int
-(** [last_num_2_exn s] returns the last number found in [s], which could be either a digit, or a word like "one" *)
