@@ -16,32 +16,30 @@ let%test _ = last_num_exn "treb7uchet" = 7
 
 (* PART 2 *)
 
+let is_prefixes s ~prefixes =
+  List.find prefixes ~f:(fun prefix -> String.is_prefix s ~prefix)
+  |> Option.is_some
+
 let rec first_num_2_exn s acc =
   match s with
   | "" -> acc
-  | s when String.is_prefix s ~prefix:"one" || String.is_prefix s ~prefix:"1" ->
+  | s when is_prefixes s ~prefixes:[ "one"; "1" ] ->
       first_num_2_exn (String.drop_prefix s 1) (acc @ [ 1 ])
-  | s when String.is_prefix s ~prefix:"two" || String.is_prefix s ~prefix:"2" ->
+  | s when is_prefixes s ~prefixes:[ "two"; "2" ] ->
       first_num_2_exn (String.drop_prefix s 1) (acc @ [ 2 ])
-  | s when String.is_prefix s ~prefix:"three" || String.is_prefix s ~prefix:"3"
-    ->
+  | s when is_prefixes s ~prefixes:[ "three"; "3" ] ->
       first_num_2_exn (String.drop_prefix s 1) (acc @ [ 3 ])
-  | s when String.is_prefix s ~prefix:"four" || String.is_prefix s ~prefix:"4"
-    ->
+  | s when is_prefixes s ~prefixes:[ "four"; "4" ] ->
       first_num_2_exn (String.drop_prefix s 1) (acc @ [ 4 ])
-  | s when String.is_prefix s ~prefix:"five" || String.is_prefix s ~prefix:"5"
-    ->
+  | s when is_prefixes s ~prefixes:[ "five"; "5" ] ->
       first_num_2_exn (String.drop_prefix s 1) (acc @ [ 5 ])
-  | s when String.is_prefix s ~prefix:"six" || String.is_prefix s ~prefix:"6" ->
+  | s when is_prefixes s ~prefixes:[ "six"; "6" ] ->
       first_num_2_exn (String.drop_prefix s 1) (acc @ [ 6 ])
-  | s when String.is_prefix s ~prefix:"seven" || String.is_prefix s ~prefix:"7"
-    ->
+  | s when is_prefixes s ~prefixes:[ "seven"; "7" ] ->
       first_num_2_exn (String.drop_prefix s 1) (acc @ [ 7 ])
-  | s when String.is_prefix s ~prefix:"eight" || String.is_prefix s ~prefix:"8"
-    ->
+  | s when is_prefixes s ~prefixes:[ "eight"; "8" ] ->
       first_num_2_exn (String.drop_prefix s 1) (acc @ [ 8 ])
-  | s when String.is_prefix s ~prefix:"nine" || String.is_prefix s ~prefix:"9"
-    ->
+  | s when is_prefixes s ~prefixes:[ "nine"; "9" ] ->
       first_num_2_exn (String.drop_prefix s 1) (acc @ [ 9 ])
   | _ -> first_num_2_exn (String.drop_prefix s 1) acc
 
