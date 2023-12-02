@@ -1,0 +1,11 @@
+(executable
+ (public_name day01)
+ (name day01)
+ (modules day01)
+ (libraries day01 base stdio))
+
+(executable
+ (public_name day02)
+ (name day02)
+ (modules day02)
+ (libraries day02 base stdio))
