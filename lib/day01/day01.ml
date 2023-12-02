@@ -2,22 +2,14 @@ open Base
 
 (* PART 1 *)
 
-let rec first_num_exn s =
-  match String.to_list s with
-  | [] -> failwith "No number found"
-  | h :: _ when Char.is_digit h -> h |> String.of_char |> Int.of_string
-  | _ :: t -> first_num_exn (String.of_char_list t)
+let first_num_exn s =
+  s |> String.to_list |> List.find ~f:Char.is_digit |> Option.value_exn
+  |> String.of_char |> Int.of_string
 
 let%test _ = first_num_exn "1abc2" = 1
 let%test _ = first_num_exn "pqr3stu8vwx" = 3
 let%test _ = first_num_exn "treb7uchet" = 7
-
-let rec last_num_exn s =
-  match List.rev (String.to_list s) with
-  | [] -> failwith "Non number found"
-  | h :: _ when Char.is_digit h -> h |> String.of_char |> Int.of_string
-  | _ :: t -> last_num_exn (String.of_char_list (List.rev t))
-
+let last_num_exn s = first_num_exn (String.rev s)
 let%test _ = last_num_exn "1abc2" = 2
 let%test _ = last_num_exn "pqr3stu8vwx" = 8
 let%test _ = last_num_exn "treb7uchet" = 7
