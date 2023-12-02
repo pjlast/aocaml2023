@@ -11,15 +11,15 @@
 
 (maintainers "Petri-Johan Last")
 
-(license LICENSE)
+(license MIT)
 
-(documentation https://url/to/documentation)
+(documentation https://github.com/pjlast/aocaml2023)
 
 (package
  (name aocaml2023)
  (synopsis "A short synopsis")
  (description "A longer description")
- (depends ocaml dune base)
+ (depends ocaml dune base ppx_inline_test)
  (tags
   (topics "to describe" your project)))
 

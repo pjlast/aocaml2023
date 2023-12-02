@@ -4,6 +4,10 @@ We'll see how far I get this year. These are my solutions to the [Advent of Code
 
 My goal this year is to try and maintain a good project structure with interface files and unit tests where applicable.
 
+## Install dependencies
+
+`opam install . --deps-only --with-test`
+
 ## Development
 
 I run `dune runtest -w` while developing the library part of the problem to continually run my unit tests. And then when I'm ready to wire things up, I run `dune exec dayX -w`.
