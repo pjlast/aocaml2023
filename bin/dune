@@ -9,3 +9,9 @@
  (name day02_main)
  (modules day02_main)
  (libraries day02 base stdio))
+
+(executable
+ (public_name day03)
+ (name day03_main)
+ (modules day03_main)
+ (libraries day03 base stdio))
