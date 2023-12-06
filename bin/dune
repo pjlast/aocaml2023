@@ -27,3 +27,9 @@
  (name day05_main)
  (modules day05_main)
  (libraries day05 base stdio))
+
+(executable
+ (public_name day06)
+ (name day06_main)
+ (modules day06_main)
+ (libraries day06 base stdio))

@@ -28,4 +28,4 @@ let%test _ =
     ]
   in
   let mlstd = map_list_source_to_dest dsm_l in
-  51 = mlstd 99 && 55 = mlstd 53 && 10 = mlstd 11
+  51 = mlstd 99 && 55 = mlstd 53 && 10 = mlstd 10
