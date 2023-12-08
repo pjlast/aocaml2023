@@ -6,8 +6,6 @@ type node = {
   mutable right : node option;
 }
 
-let tbl : (string, node) Hashtbl.t = Hashtbl.create (module String)
-
 let parse_loc line =
   match
     line
@@ -34,20 +32,6 @@ let char_to_direction = function
   | 'R' -> R
   | _ -> failwith "invalid direction"
 
-let _dir_to_str = function
-  | L -> "L"
-  | R -> "R"
-
-let steps =
-  String.to_list
-    {|LLRLRRRLRRRLRRLLRRRLLRRLLRLRLRRRLRRRLLRRRLLRRRLRRLRRLRLRRLLRRRLRRRLLRRRLRRLLLRRLRLLLRLRRRLRLRLLLRRLRRLLLRRRLLRRRLRLRLLRRLRLRRRLRLRLLRLRRLRRRLRRLRLRRRLRLRRLRRLRLRRLLRLRLRRLRLLRRLRRLRLRRLLRLRLLRRLLRLLLRRLRLRRRLRRRLRRRLRLRLRRRLLLRLRRLRLRRRLRRRLRRRLRLRRRLRRRLRRRLRRRR|}
-  |> List.map ~f:char_to_direction
-
-let rec take_step steps' =
-  match steps' with
-  | h :: t -> (h, t)
-  | [] -> take_step steps
-
 let travel { left; right; _ } step =
   match step with
   | L -> (
@@ -60,8 +44,10 @@ let travel { left; right; _ } step =
       | None -> failwith "NONE")
 
 let part_1 () =
+  let tbl : (string, node) Hashtbl.t = Hashtbl.create (module String) in
+
   match Stdio.In_channel.read_all "inputs/day08.txt" |> String.split_lines with
-  | _movements :: _ :: map ->
+  | movements :: _ :: map ->
       let rec aux l =
         match l with
         | h :: t ->
@@ -98,7 +84,16 @@ let part_1 () =
         | _ -> ()
       in
       aux map;
-      Stdio.print_endline "Loaded up";
+
+      let steps =
+        movements |> String.to_list |> List.map ~f:char_to_direction
+      in
+
+      let rec take_step steps' =
+        match steps' with
+        | h :: t -> (h, t)
+        | [] -> take_step steps
+      in
 
       let first = Hashtbl.find_exn tbl "AAA" in
 
@@ -115,8 +110,10 @@ let part_1 () =
   | _ -> failwith "Invalid input"
 
 let part_2 () =
+  let tbl : (string, node) Hashtbl.t = Hashtbl.create (module String) in
+
   match Stdio.In_channel.read_all "inputs/day08.txt" |> String.split_lines with
-  | _movements :: _ :: map ->
+  | movements :: _ :: map ->
       let rec aux l =
         match l with
         | h :: t ->
@@ -153,7 +150,16 @@ let part_2 () =
         | _ -> ()
       in
       aux map;
-      Stdio.print_endline "Loaded up";
+
+      let steps =
+        movements |> String.to_list |> List.map ~f:char_to_direction
+      in
+
+      let rec take_step steps' =
+        match steps' with
+        | h :: t -> (h, t)
+        | [] -> take_step steps
+      in
 
       let inputs =
         Hashtbl.keys tbl
@@ -195,7 +201,7 @@ let () =
 
   Stdio.print_endline "day 8 part 2";
   part_2 ()
-  |> List.reduce ~f:( lcm )
+  |> List.reduce ~f:lcm
   |> Option.value_exn
   |> Int.to_string
   |> Stdio.print_endline
