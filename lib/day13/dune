@@ -2,4 +2,5 @@
  (name day13)
  (inline_tests)
  (libraries base stdio)
- (preprocess (pps ppx_inline_test)))
+ (preprocess
+  (pps ppx_inline_test)))

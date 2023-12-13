@@ -3,8 +3,12 @@ open Base
 (* PART 1 *)
 
 let first_num_exn s =
-  s |> String.to_list |> List.find ~f:Char.is_digit |> Option.value_exn
-  |> String.of_char |> Int.of_string
+  s
+  |> String.to_list
+  |> List.find ~f:Char.is_digit
+  |> Option.value_exn
+  |> String.of_char
+  |> Int.of_string
 
 let%test _ = first_num_exn "1abc2" = 1
 let%test _ = first_num_exn "pqr3stu8vwx" = 3

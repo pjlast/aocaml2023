@@ -22,11 +22,13 @@ let%test _ =
 
 type number = { start : coord; end' : coord; value : int }
 
-(** Extract a list of numbers from a single string line (which should be a [char list]) *)
+(** Extract a list of numbers from a single string line (which should be a
+    [char list]) *)
 let rec number_list_of_string_line str_l row curr_col (curr_num : number) acc =
   match str_l with
   | [] ->
-      if curr_num.value = 0 then acc
+      if curr_num.value = 0 then
+        acc
       else
         acc
         @ [
@@ -121,7 +123,8 @@ let%test _ =
       && a.value = b.value)
     want got
 
-(** Compare a number with a given (row, col) coordinate and return true if the number is adjacent to the coordinate in any direction, including diagonally *)
+(** Compare a number with a given (row, col) coordinate and return true if the
+    number is adjacent to the coordinate in any direction, including diagonally *)
 let num_and_coord_is_neighbour { start = numrow, startcol; end' = _, endcol; _ }
     (row, col) =
   (row >= numrow - 1 && row <= numrow + 1)
@@ -143,8 +146,10 @@ let sum_valid_nums nummap symmap =
         if
           Option.is_some
             (List.find symmap ~f:(fun sym -> num_and_coord_is_neighbour num sym))
-        then Some num.value
-        else None)
+        then
+          Some num.value
+        else
+          None)
   in
   List.fold vals_with_neighbours ~init:0 ~f:(fun acc x -> acc + x)
 
@@ -170,7 +175,9 @@ let gear_list_of_string str =
   List.fold
     (List.mapi (String.split_lines str) ~f:(fun i line ->
          List.filter_mapi (String.to_list line) ~f:(fun j c ->
-             match c with '*' -> Some (i, j) | _ -> None)))
+             match c with
+             | '*' -> Some (i, j)
+             | _ -> None)))
     ~init:[]
     ~f:(fun acc x -> acc @ x)
 
@@ -182,14 +189,22 @@ let%test _ =
   let got = gear_list_of_string input in
   List.equal (fun (a, b) (c, d) -> a = c && b = d) want got
 
-(** Given a list of coordinates and a list of numbers, returns the value of each number adjacent to a gear, if and only if that gear has exactly two adjacent numbers *)
+(** Given a list of coordinates and a list of numbers, returns the value of each
+    number adjacent to a gear, if and only if that gear has exactly two adjacent
+    numbers *)
 let nums_adjacent_gears gears nums =
   List.filter_map gears ~f:(fun gear ->
       let adjacent_nums =
         List.filter_map nums ~f:(fun num ->
-            if num_and_coord_is_neighbour num gear then Some num.value else None)
+            if num_and_coord_is_neighbour num gear then
+              Some num.value
+            else
+              None)
       in
-      if List.length adjacent_nums = 2 then Some adjacent_nums else None)
+      if List.length adjacent_nums = 2 then
+        Some adjacent_nums
+      else
+        None)
 
 let%test _ =
   let input =

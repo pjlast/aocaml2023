@@ -5,7 +5,8 @@ type dest_source_map = { dest_start : int; source_start : int; range : int }
 let map_source_to_dest dsm i =
   if i >= dsm.source_start && i < dsm.source_start + dsm.range then
     Some (i + dsm.dest_start - dsm.source_start)
-  else None
+  else
+    None
 
 let%test _ =
   let dsm = { dest_start = 50; source_start = 98; range = 2 } in

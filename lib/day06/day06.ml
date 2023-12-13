@@ -6,7 +6,10 @@ let calc_ways_to_win time dist =
   let secs = List.range 0 (time + 1) in
   List.filter_map secs ~f:(fun t ->
       let d = (time - t) * t in
-      if d > dist then Some t else None)
+      if d > dist then
+        Some t
+      else
+        None)
 
 let%test _ = calc_ways_to_win 7 9 |> List.length = 4
 let%test _ = calc_ways_to_win 15 40 |> List.length = 8

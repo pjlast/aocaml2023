@@ -27,7 +27,9 @@ let score game =
         hand.red > red || hand.green > green || hand.blue > blue)
   in
 
-  match found with Some _ -> 0 | None -> game.id
+  match found with
+  | Some _ -> 0
+  | None -> game.id
 
 let power game =
   let red =

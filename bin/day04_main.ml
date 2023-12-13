@@ -8,7 +8,11 @@ let solve_part_1 line =
   let scratch_nums = List.last_exn parts in
   List.fold scratch_nums ~init:0 ~f:(fun acc num ->
       match List.find win_nums ~f:(fun e -> e = num) with
-      | Some _ -> if acc = 0 then 1 else acc * 2
+      | Some _ ->
+          if acc = 0 then
+            1
+          else
+            acc * 2
       | None -> acc)
 
 let rec solve_day_4_part_1 ic acc =

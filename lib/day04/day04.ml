@@ -2,12 +2,16 @@ open Base
 
 (* PART 1 *)
 let int_list_of_string str =
-  str |> String.strip |> String.split ~on:' '
+  str
+  |> String.strip
+  |> String.split ~on:' '
   |> List.filter ~f:(fun i -> not (i |> String.strip |> String.is_empty))
   |> List.map ~f:Int.of_string
 
 let card_of_string str =
-  String.split ~on:':' str |> List.last |> Option.value_exn
+  String.split ~on:':' str
+  |> List.last
+  |> Option.value_exn
   |> String.split ~on:'|'
   |> List.map ~f:int_list_of_string
 

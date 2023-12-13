@@ -15,7 +15,9 @@ let parse_line str =
   | _ -> failwith "Invalid hand"
 
 let%test _ =
-  match parse_line "32T3K 765" with "32T3K", 765 -> true | _ -> false
+  match parse_line "32T3K 765" with
+  | "32T3K", 765 -> true
+  | _ -> false
 
 let card_to_num = function
   | 'T' -> 10
@@ -44,10 +46,14 @@ let parse_hand_type str =
   | _ -> failwith "Invalid hand"
 
 let%test _ =
-  match parse_hand_type "AAAAA" with Five_of_a_kind _ -> true | _ -> false
+  match parse_hand_type "AAAAA" with
+  | Five_of_a_kind _ -> true
+  | _ -> false
 
 let%test _ =
-  match parse_hand_type "23456" with High_card _ -> true | _ -> false
+  match parse_hand_type "23456" with
+  | High_card _ -> true
+  | _ -> false
 
 let hand_score = function
   | Five_of_a_kind _ -> 7
@@ -61,7 +67,10 @@ let hand_score = function
 let rec compare_high_card (a : int list) (b : int list) =
   match (a, b) with
   | ah :: at, bh :: bt ->
-      if ah - bh = 0 then compare_high_card at bt else ah - bh
+      if ah - bh = 0 then
+        compare_high_card at bt
+      else
+        ah - bh
   | [], [] -> 0
   | _ -> failwith "Invalid hands"
 
@@ -72,7 +81,8 @@ let compare_hands a b =
     let hand_num_a = a |> String.to_list |> List.map ~f:card_to_num in
     let hand_num_b = b |> String.to_list |> List.map ~f:card_to_num in
     compare_high_card hand_num_a hand_num_b
-  else hand_score hand_a - hand_score hand_b
+  else
+    hand_score hand_a - hand_score hand_b
 
 let%test _ = compare_hands "AAAAA" "KKKKK" > 0
 let%test _ = compare_hands "KKKKK" "AAAAA" < 0
@@ -87,7 +97,9 @@ QQQJA 483|}
 
 let%test _ =
   let processed_list =
-    input |> String.split_lines |> List.map ~f:parse_line
+    input
+    |> String.split_lines
+    |> List.map ~f:parse_line
     |> List.sort ~compare:(fun (ac, _) (bc, _) -> compare_hands ac bc)
   in
   let total =
