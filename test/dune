@@ -1,2 +1,3 @@
 (test
- (name aocaml2023))
+ (name aocaml2023)
+ (libraries ounit2 day11 fmt))

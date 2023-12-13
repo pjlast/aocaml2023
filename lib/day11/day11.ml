@@ -148,33 +148,21 @@ let expand_galaxy_million map =
 
 let get_galaxies map =
   map
-  |> List.filter_mapi ~f:(fun i row ->
-         let j =
-           List.filter_mapi row ~f:(fun j c ->
-               if c |> Char.equal '#' then
-                 Some j
-               else
-                 None)
-         in
-         match j with
-         | [] -> None
-         | j -> Some (j |> List.map ~f:(fun j -> (i, j))))
-  |> Stdlib.List.flatten
+  |> List.concat_mapi ~f:(fun i row ->
+         List.filter_mapi row ~f:(fun j c ->
+             if c |> Char.equal '#' then
+               Some (i, j)
+             else
+               None))
 
 let get_galaxies_2 map =
-  map
-  |> List.filter_mapi ~f:(fun _ row ->
-         let j =
-           List.filter_mapi row ~f:(fun _ (a, (b, c)) ->
-               if c |> Char.equal '#' then
-                 Some (a, b)
-               else
-                 None)
-         in
-         match j with
-         | [] -> None
-         | j -> Some (j |> List.map ~f:(fun j -> j)))
-  |> Stdlib.List.flatten
+  let open List.Monad_infix in
+  map >>= fun row ->
+  List.filter_map row ~f:(fun (a, (b, c)) ->
+      if c |> Char.equal '#' then
+        Some (a, b)
+      else
+        None)
 
 let%test _ =
   let input_map = {|#..#

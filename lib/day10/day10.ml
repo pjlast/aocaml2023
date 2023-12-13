@@ -6,13 +6,16 @@ let test_input = {|.....
 .L-J.
 .....|}
 
-let map_of_input : string -> char list list =
- fun input -> input |> String.split_lines |> List.map ~f:String.to_list
+let map_of_input : string -> char array array =
+ fun input ->
+  input
+  |> String.split_lines
+  |> Array.of_list_map ~f:(fun line -> line |> String.to_list |> Array.of_list)
 
 let find_start map =
-  List.find_mapi map ~f:(fun i row ->
+  Array.find_mapi map ~f:(fun i row ->
       let found =
-        List.find_mapi row ~f:(fun j col ->
+        Array.find_mapi row ~f:(fun j col ->
             if col |> Char.equal 'S' then
               Some j
             else
@@ -27,17 +30,7 @@ let%test _ =
   let s = test_input |> map_of_input |> find_start in
   s |> Poly.( = ) (1, 1)
 
-let get_char_at (row, col) map =
-  List.find_mapi map ~f:(fun i r ->
-      if i = row then
-        List.find_mapi r ~f:(fun j c ->
-            if j = col then
-              Some c
-            else
-              None)
-      else
-        None)
-  |> Option.value_exn
+let get_char_at (row, col) map = map.(row).(col)
 
 let%test _ =
   let c = test_input |> map_of_input |> get_char_at (1, 3) in
@@ -45,10 +38,8 @@ let%test _ =
 
 (** [take_step map start dest] takes a step on [map] at from position [start] to
     position [dest] and returns the next step to take. *)
-let take_step map start dest =
-  let starty, startx = start in
-  let desty, destx = dest in
-  let c = get_char_at dest map in
+let take_step map (starty, startx) (desty, destx) =
+  let c = map.(desty).(destx) in
   match c with
   | '|' ->
       if starty < desty then
@@ -82,17 +73,30 @@ let take_step map start dest =
         (starty + 1, startx - 1)
   | _ -> failwith "invalid move"
 
+let take_step_mod map ((starty, startx) as start) dest =
+  let res = take_step map start dest in
+  map.(starty).(startx) <- '#';
+  res
+
 let%test _ =
   let map = test_input |> map_of_input in
   let next = take_step map (1, 2) (1, 3) in
   next |> Poly.( = ) (2, 3)
 
 let get_loop_length start dest map =
-  let rec aux start dest acc =
-    let c = get_char_at dest map in
-    match c with
+  let rec aux start ((desty, destx) as dest) acc =
+    match map.(desty).(destx) with
     | 'S' -> acc
     | _ -> aux dest (take_step map start dest) (acc + 1)
+  in
+  aux start dest 0
+
+let mod_map start dest map =
+  let rec aux start ((desty, destx) as dest) acc =
+    match map.(desty).(destx) with
+    | 'S' -> acc
+    | '#' -> acc
+    | _ -> aux dest (take_step_mod map start dest) (acc + 1)
   in
   aux start dest 0
 

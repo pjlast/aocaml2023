@@ -63,3 +63,15 @@
  (name day11_main)
  (modules day11_main)
  (libraries day11 base stdio))
+
+(executable
+ (public_name day12)
+ (name day12_main)
+ (modules day12_main)
+ (libraries day12 base stdio))
+
+(executable
+ (public_name day13)
+ (name day13_main)
+ (modules day13_main)
+ (libraries day13 base stdio))
