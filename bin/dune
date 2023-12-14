@@ -75,3 +75,9 @@
  (name day13_main)
  (modules day13_main)
  (libraries day13 base stdio))
+
+(executable
+ (public_name day14 )
+ (name day14_main)
+ (modules day14_main)
+ (libraries day14 base stdio))
