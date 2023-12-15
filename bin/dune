@@ -77,7 +77,13 @@
  (libraries day13 base stdio))
 
 (executable
- (public_name day14 )
+ (public_name day14)
  (name day14_main)
  (modules day14_main)
  (libraries day14 base stdio))
+
+(executable
+ (public_name day15)
+ (name day15_main)
+ (modules day15_main)
+ (libraries base stdio))
